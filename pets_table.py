@@ -1,16 +1,16 @@
 import streamlit as st
 import pandas as pd
 
-# Connect to Snowflake using st.experimental_connection()
-conn = st.experimental_connection("snowflake", type="snowflake")
+# ✅ Securely Connect to Snowflake using Streamlit secrets
+conn = st.connection("snowflake", type="snowflake")
 
-# Function to fetch data from Snowflake
+# ✅ Function to Fetch Data from Snowflake
 def fetch_data():
     query = "SELECT * FROM ANIMALS"
     df = conn.query(query, ttl=600)  # Cache for 10 minutes
     return df
 
-# Function to update a row
+# ✅ Function to Update an Existing Row
 def update_row(row_id, name, species, age, colour, description):
     update_query = f"""
     UPDATE ANIMALS 
@@ -20,7 +20,7 @@ def update_row(row_id, name, species, age, colour, description):
     conn.execute(update_query)
     st.success(f"Updated ID {row_id} successfully!")
 
-# Function to add a new row
+# ✅ Function to Add a New Row
 def add_new_animal(name, species, age, colour, description):
     insert_query = f"""
     INSERT INTO ANIMALS (NAME, SPECIES, AGE, COLOUR, DESCRIPTION)
@@ -29,7 +29,7 @@ def add_new_animal(name, species, age, colour, description):
     conn.execute(insert_query)
     st.success("New animal added successfully!")
 
-# Fetch data from Snowflake
+# 🔹 Fetch Data from Snowflake
 st.title("🐾 Animal Database (Snowflake)")
 
 df = fetch_data()
